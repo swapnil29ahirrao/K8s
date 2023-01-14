@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calling-app-service
+spec:
+  selector:
+    app: calling-app
+  ports:
+    - protocol: "TCP"
+      port: 9090
+      targetPort: 9090
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calling-app
+spec:
+  selector:
+    matchLabels:
+      app: calling-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: calling-app
+    spec:
+      containers:
+        - name: calling-app
+          image: calling-app
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9090
